@@ -9,7 +9,7 @@ from utils import plot_results
 import sys, getopt, os
 from sklearn.model_selection import train_test_split
 
-
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 argv = sys.argv[1:]
 try:
     options, args = getopt.getopt(argv, "b:e:n:",
@@ -50,11 +50,11 @@ testdl = DataLoader(testds, batch_size, shuffle= True)
 
 # creating model
 model = BiStreamModel()
-model = model.cuda()
+model = model.to(device)
 
 # definiation of optimizer and oss function
 optimizer = torch.optim.Adam(model.parameters(), lr=1e-6)
-loss_fn = torch.nn.BCEWithLogitsLoss(pos_weight=torch.Tensor(np.array([2]*128*128)).cuda())
+loss_fn = torch.nn.BCEWithLogitsLoss(pos_weight=torch.Tensor(np.array([2]*128*128)).to(device))
 
 history = train(model, traindl, evaldl, loss_fn, optimizer, epochs, "./results/model.pth")
 
@@ -67,7 +67,7 @@ plt.savefig("./results/epoch_loss.png")
 
 # showing examples
 for X, y in traindl:
-    X = X.cuda()
-    y = y.cuda()
+    X = X.to(device)
+    y = y.to(device)
     pred = model(X)
 plot_results(X, y, pred, batch_size, "./results/pic_result.png")
