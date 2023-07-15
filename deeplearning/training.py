@@ -3,15 +3,15 @@ import torch
 
 def train(model, dataloader, evalloader, loss_fn, optimizer, epochs, path):
     history = {"loss":[], "eval_loss": []}
-    
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     for epoch in range(epochs):
         model.train()
         print("epoch {}".format(epoch))
         epoch_loss = 0
         iter = 0
         for X, y in tqdm(dataloader):
-            X = X.cuda()
-            y = y.cuda()
+            X = X.to(device)
+            y = y.to(device)
             pred = model(X)
             loss = loss_fn(pred, y)
             optimizer.zero_grad()
@@ -28,8 +28,8 @@ def train(model, dataloader, evalloader, loss_fn, optimizer, epochs, path):
         eval_loss = 0
         iter = 0
         for X, y in evalloader:
-            X = X.cuda()
-            y = y.cuda()
+            X = X.to(device)
+            y = y.to(device)
             pred = model(X)
             loss = loss_fn(pred, y)
             eval_loss = (eval_loss * iter + loss.detach().item())/(iter+1)
