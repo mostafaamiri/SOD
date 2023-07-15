@@ -6,25 +6,26 @@ from torch import nn
 class BiStreamModel(nn.Module):
   def __init__(self):
     super().__init__()
-    self.R_model = resnet50(weights='IMAGENET1K_V1').cuda()
-    self.V_model = vgg16(weights='IMAGENET1K_V1').features.cuda()
-    self.igs = [InputGateModule(64, 64).cuda(),
-                InputGateModule(128, 256).cuda(),
-                InputGateModule(256, 512).cuda(),
-                InputGateModule(512, 1024).cuda(),
-                InputGateModule(512, 2048).cuda()]
-    self.ogs = [OutputGateModule(64).cuda(),
-                OutputGateModule(256).cuda(),
-                OutputGateModule(512).cuda(),
-                OutputGateModule(1024).cuda()]
-    self.mlas = [MLA(256, 1024).cuda(),
-                 MLA(64, 2048).cuda()]
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    self.R_model = resnet50(weights='IMAGENET1K_V1').to(device)
+    self.V_model = vgg16(weights='IMAGENET1K_V1').features.to(device)
+    self.igs = [InputGateModule(64, 64).to(device),
+                InputGateModule(128, 256).to(device),
+                InputGateModule(256, 512).to(device),
+                InputGateModule(512, 1024).to(device),
+                InputGateModule(512, 2048).to(device)]
+    self.ogs = [OutputGateModule(64).to(device),
+                OutputGateModule(256).to(device),
+                OutputGateModule(512).to(device),
+                OutputGateModule(1024).to(device)]
+    self.mlas = [MLA(256, 1024).to(device),
+                 MLA(64, 2048).to(device)]
     self.last_conv = nn.Conv2d(2048, 128, 1)
     self.classifier = nn.Sequential(
         nn.ReLU(),
         nn.Dropout(0.1),
         nn.Linear(2048, 16384)
-    ).cuda()
+    ).to(device)
 
   def forward(self, X):
     X_r1 = self.R_model.conv1(X)
