@@ -27,7 +27,7 @@ def train(model, dataloader, evalloader, loss_fn, optimizer, epochs, path, Xn, y
         history["loss"].append(epoch_loss)
     
         # if epoch%10 == 0:
-        torch.save(model.state_dict(), "/content/drive/MyDrive/model.pth")
+        torch.save(model.state_dict(), path+"/model.pth")
         print("model saved")
     
         pred = model(Xn)
@@ -45,7 +45,7 @@ def train(model, dataloader, evalloader, loss_fn, optimizer, epochs, path, Xn, y
         ax[0][1].set_title("pred with thrsh:0.7")
         ax[0][2].set_title("Pred")
         ax[0][3].set_title("Original pic")
-        plt.savefig("/content/drive/MyDrive/pic_"+str(epoch+1)+".png")
+        plt.savefig(path+"/pic_"+str(epoch+1)+".png")
     
     
         model.eval()
