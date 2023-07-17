@@ -1,4 +1,6 @@
 from tqdm import tqdm
+import torch
+from torch import nn
 
 def evaluate(model, dataloader, loss_fn1, loss_fn2):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
