@@ -1,16 +1,25 @@
 from tqdm import tqdm
 
-def evaluate(model, dataloader, loss_fn):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+def evaluate(model, dataloader, loss_fn1, loss_fn2):
     model.eval()
-    total_loss = 0
+    test_loss = 0
     iter = 0
-    for X, y in tqdm(dataloader):
+    for X, y in testdl:
         X = X.to(device)
         y = y.to(device)
         pred = model(X)
-        loss = loss_fn(pred, y)
-        total_loss = (total_loss * iter + loss.detach().item())/(iter+1)
-        iter+=1
-    print("test loss is : {}".format(total_loss))
-    return total_loss
+        loss = loss_fn1(pred, y)
+        test_loss = (test_loss * iter + loss.detach().item())/(iter+1)
+        iter += 1
+    print("test BCE loss is : {}".format(test_loss))
+    
+    test_loss = 0
+    iter = 0
+    for X, y in testdl:
+        X = X.to(device)
+        y = y.to(device)
+        pred = model(X)
+        loss = loss_fn2((nn.functional.sigmoid(pred)>0.7).float(), y)
+        test_loss = (test_loss * iter + loss.detach().item())/(iter+1)
+        iter += 1
+    print("test MAE loss is : {}".format(test_loss))
