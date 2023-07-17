@@ -3,7 +3,7 @@ import torch
 from torch import nn
 import matplotlib.pyplot as plt
 
-def train(model, dataloader, evalloader, loss_fn, optimizer, epochs, path, Xn, yn):
+def train(model, dataloader, evalloader, loss_fn, optimizer, epochs, path, Xn, yn, batch_size):
 
     history = {"loss":[], "eval_loss": []}
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
