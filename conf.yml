@@ -1,0 +1,4 @@
+epochs : 20
+num : 10000
+path : "/content/drive/MyDrive"
+batch_size : 4
