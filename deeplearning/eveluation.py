@@ -1,10 +1,11 @@
 from tqdm import tqdm
 
 def evaluate(model, dataloader, loss_fn1, loss_fn2):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model.eval()
     test_loss = 0
     iter = 0
-    for X, y in testdl:
+    for X, y in dataloader:
         X = X.to(device)
         y = y.to(device)
         pred = model(X)
@@ -15,7 +16,7 @@ def evaluate(model, dataloader, loss_fn1, loss_fn2):
     
     test_loss = 0
     iter = 0
-    for X, y in testdl:
+    for X, y in dataloader:
         X = X.to(device)
         y = y.to(device)
         pred = model(X)
