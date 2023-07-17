@@ -73,7 +73,7 @@ plt.savefig(path+"/pic_"+str(0)+".png")
 
 # training model
 history = train(model, traindl, evaldl, loss_fn, optimizer, epochs, path, Xn, yn, batch_size)
-
+plt.clf()
 plt.plot(history["loss"], label="loss")
 plt.plot(history["eval_loss"], label="eval")
 plt.legend()
