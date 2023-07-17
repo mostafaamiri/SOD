@@ -6,18 +6,19 @@ import torch
 from torch import nn
 import numpy as np
 import matplotlib.pyplot as plt
-from utils import plot_results
+from utils import plot_results, get_conf
 import sys, getopt, os
 from sklearn.model_selection import train_test_split
 
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-
+conf = get_conf("conf.yml")
 # config
-epochs = 20
-num = 1024*9
-batch_size = 4
-path = "/content/drive/MyDrive"
+epochs = conf["epochs"]
+num = conf["num"]
+batch_size = conf["batch_size"]
+path = conf["path"]
 
 # dataset
 
