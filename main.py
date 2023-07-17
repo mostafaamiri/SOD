@@ -55,6 +55,21 @@ for Xn, yn in traindl:
     yn = yn.to(device)
     break
 pred = model(Xn)
+fig , ax = plt.subplots(nrows=batch_size, ncols=4, figsize=(10,10))
+for i in range(batch_size):
+    ax[i][0].imshow(yn[i].cpu().detach().numpy().reshape((128, 128)))
+    ax[i][1].imshow((nn.functional.sigmoid(pred[i])>0.7).float().cpu().detach().numpy().reshape((128,128)))
+    ax[i][2].imshow((nn.functional.sigmoid(pred[i])).float().cpu().detach().numpy().reshape((128,128)))
+    ax[i][3].imshow(Xn[i].permute(1,2,0).cpu().detach().numpy())
+    ax[i][0].axis('off')
+    ax[i][1].axis('off')
+    ax[i][2].axis('off')
+    ax[i][3].axis('off')
+ax[0][0].set_title("Ground Truth")
+ax[0][1].set_title("pred with thrsh:0.7")
+ax[0][2].set_title("Pred")
+ax[0][3].set_title("Original pic")
+plt.savefig(path+"/pic_"+str(0)+".png")
 
 # training model
 history = train(model, traindl, evaldl, loss_fn, optimizer, epochs, path, Xn, yn)
