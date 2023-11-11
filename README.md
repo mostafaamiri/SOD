@@ -9,5 +9,5 @@ set config in conf.yml file and then run :
 
 `$ python main.py`
 - some resulf moel s as below:
-![image](https://github.com/mostafaamiri/SOD/assets/20011144/216b6abd-7a74-4c0e-9c48-a01c645605fa)
+![image](https://github.com/mostafaamiri/SOD/blob/main/results/result.png)
 
